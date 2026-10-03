@@ -1,0 +1,40 @@
+name: Lint
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Shared helper copies are in sync
+        run: bash scripts/sync-common.sh --check
+
+      - name: ShellCheck
+        run: |
+          shellcheck --version
+          shellcheck -x -s bash common/postiz-ha-common.sh scripts/*.sh */rootfs/usr/local/bin/*.sh
+
+      - name: yamllint
+        run: |
+          pip install --quiet yamllint
+          yamllint -c .yamllint.yaml .
+
+      - name: config.yaml sanity
+        run: |
+          pip install --quiet pyyaml
+          python3 scripts/check-config.py
+
+      - name: hadolint
+        uses: hadolint/hadolint-action@v3.1.0
+        with:
+          recursive: true
+          # DL3008: apt pins are not useful on top of pinned upstream images.
+          # DL3018: same for apk.
+          ignore: DL3008,DL3018

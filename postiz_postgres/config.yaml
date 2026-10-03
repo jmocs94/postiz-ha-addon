@@ -1,0 +1,36 @@
+# Postiz PostgreSQL - Home Assistant app configuration
+# upstream_version: postgres 16.15-trixie
+name: Postiz PostgreSQL
+version: "0.1.0"
+slug: postiz_postgres
+description: PostgreSQL 16 database server for the Postiz app suite (Postiz + Temporal databases).
+url: https://www.postgresql.org/
+arch:
+  - amd64
+# Databases start in the "system" phase, before Home Assistant Core.
+startup: system
+boot: auto
+# PostgreSQL itself runs as PID 1, exactly like the official image.
+init: false
+# Give PostgreSQL time to checkpoint on stop (SIGINT = fast shutdown).
+timeout: 120
+# Stop PostgreSQL during backups so the data directory is consistent.
+backup: cold
+stage: experimental
+# Not published on the LAN. You can temporarily map a host port in the
+# app's Network section for debugging; leave it empty for normal use.
+ports:
+  5432/tcp: null
+ports_description:
+  5432/tcp: PostgreSQL (leave empty - only for temporary debugging)
+watchdog: tcp://[HOST]:5432
+options:
+  postiz_password: ""
+  temporal_password: ""
+  max_connections: 100
+  shared_buffers_mb: 128
+schema:
+  postiz_password: password
+  temporal_password: password
+  max_connections: int(40,500)
+  shared_buffers_mb: int(32,2048)

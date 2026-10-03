@@ -1,0 +1,25 @@
+configuration:
+  database_password:
+    name: Database password
+    description: >-
+      Must equal "Temporal database password" in the Postiz PostgreSQL app.
+  namespace_retention:
+    name: Workflow history retention
+    description: >-
+      How long finished workflow histories are kept (hours, e.g. 72h).
+      Only applied when the "default" namespace is first created.
+  log_level:
+    name: Log level
+    description: Temporal server log level. "warn" keeps the log quiet.
+  wait_timeout:
+    name: Dependency wait timeout (seconds)
+    description: >-
+      How long to wait for PostgreSQL at start-up before giving up with an
+      error.
+  postgres_host:
+    name: PostgreSQL host override
+    description: >-
+      Leave empty. Only set this if automatic discovery of the Postiz
+      PostgreSQL app fails (e.g. "a1b2c3d4-postiz-postgres").
+network:
+  7233/tcp: Temporal gRPC (debug only - leave empty)

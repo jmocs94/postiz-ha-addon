@@ -1,0 +1,19 @@
+configuration:
+  password:
+    name: Redis password
+    description: >-
+      Password clients must use. Enter the same value as "Redis password" in
+      the Postiz app. 16-128 characters, letters, digits and . _ ~ - only.
+      Generate one with: openssl rand -hex 24
+  maxmemory_mb:
+    name: Memory limit (MB)
+    description: >-
+      Redis maxmemory. Least-recently-used keys are evicted when full.
+      Postiz needs very little; 128 MB is generous.
+  persistence:
+    name: Persistence
+    description: >-
+      Save RDB snapshots to the app's data folder. Postiz keeps only
+      short-lived data in Redis, so this is off by default.
+network:
+  6379/tcp: Redis (debug only - leave empty)

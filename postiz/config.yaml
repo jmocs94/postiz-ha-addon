@@ -1,0 +1,99 @@
+# Postiz - Home Assistant app configuration
+# upstream_version: ghcr.io/gitroomhq/postiz-app:v2.25.0
+name: Postiz
+version: "0.1.0"
+slug: postiz
+description: Self-hosted Postiz social media scheduler (needs the Postiz PostgreSQL, Redis and Temporal apps).
+url: https://github.com/gitroomhq/postiz-app
+arch:
+  - amd64
+startup: application
+boot: auto
+# Docker's tini is PID 1 and delivers SIGTERM to the start script, which
+# stops pm2 and nginx gracefully.
+init: true
+timeout: 90
+backup: hot
+stage: experimental
+# Postiz cannot run under Home Assistant Ingress (no base-path support,
+# root-relative redirects/cookies, OAuth needs a stable public URL), so it is
+# served on its own port.
+ingress: false
+webui: http://[HOST]:[PORT:5000]
+ports:
+  5000/tcp: 4007
+ports_description:
+  5000/tcp: Postiz web interface
+# TCP check only: a slow first start (schema sync) is never killed by the
+# watchdog; crashes are caught by Supervisor's container watchdog.
+watchdog: tcp://[HOST]:[PORT:5000]
+map:
+  # /config inside the container = this app's own config folder
+  # (addon_configs/<repo>_postiz) for the optional postiz.env file.
+  - type: app_config
+    read_only: false
+options:
+  external_url: ""
+  database_password: ""
+  redis_password: ""
+  disable_registration: true
+  storage_provider: local
+  email_provider: none
+  wait_timeout: 900
+schema:
+  external_url: str
+  database_password: password
+  redis_password: password
+  jwt_secret: password?
+  disable_registration: bool
+  storage_provider: list(local|cloudflare)
+  email_provider: list(none|resend|nodemailer)
+  wait_timeout: int(60,3600)
+  # --- social providers (all optional) ---
+  x_api_key: str?
+  x_api_secret: password?
+  linkedin_client_id: str?
+  linkedin_client_secret: password?
+  reddit_client_id: str?
+  reddit_client_secret: password?
+  facebook_app_id: str?
+  facebook_app_secret: password?
+  instagram_app_id: str?
+  instagram_app_secret: password?
+  threads_app_id: str?
+  threads_app_secret: password?
+  youtube_client_id: str?
+  youtube_client_secret: password?
+  tiktok_client_id: str?
+  tiktok_client_secret: password?
+  pinterest_client_id: str?
+  pinterest_client_secret: password?
+  discord_client_id: str?
+  discord_client_secret: password?
+  discord_bot_token_id: password?
+  mastodon_url: url?
+  mastodon_client_id: str?
+  mastodon_client_secret: password?
+  # --- Cloudflare R2 (only when storage_provider = cloudflare) ---
+  cloudflare_account_id: str?
+  cloudflare_access_key: str?
+  cloudflare_secret_access_key: password?
+  cloudflare_bucket_name: str?
+  cloudflare_bucket_url: url?
+  cloudflare_region: str?
+  # --- e-mail (only when email_provider is not none) ---
+  resend_api_key: password?
+  smtp_host: str?
+  smtp_port: port?
+  smtp_secure: bool?
+  smtp_user: str?
+  smtp_password: password?
+  email_from_name: str?
+  email_from_address: email?
+  # --- misc ---
+  openai_api_key: password?
+  api_limit: int(1,100000)?
+  exclude_queues: str?
+  postgres_host: str?
+  redis_host: str?
+  temporal_host: str?

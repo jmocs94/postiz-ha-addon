@@ -1,0 +1,27 @@
+# Dependabot only OPENS pull requests; nothing updates on its own.
+# Every PR must go through the update checklist in README.md before merging.
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly
+
+  - package-ecosystem: docker
+    directories:
+      - /postiz
+      - /postiz_redis
+      - /postiz_temporal
+      - /postiz_temporal_ui
+    schedule:
+      interval: weekly
+
+  # PostgreSQL: minor updates only. A major version change needs a migration.
+  - package-ecosystem: docker
+    directory: /postiz_postgres
+    schedule:
+      interval: weekly
+    ignore:
+      - dependency-name: postgres
+        update-types:
+          - version-update:semver-major

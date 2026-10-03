@@ -1,0 +1,65 @@
+# Optional: build the wrapper images on GitHub and push them to GHCR.
+#
+# Why: Supervisor includes the image of a LOCALLY BUILT app in every Home
+# Assistant backup (image.tar). The Postiz image is ~5 GB, so once you are
+# happy with the setup, switching to prebuilt images keeps backups small.
+#
+# How to use (see README "Switching to prebuilt images"):
+#   1. Run this workflow (Actions > Build images > Run workflow).
+#   2. Make each new package public (GitHub > Packages > package > settings),
+#      or add GHCR credentials to Supervisor.
+#   3. Add `image: ghcr.io/<owner>/postiz-ha-<slug>` to each config.yaml,
+#      bump `version`, commit, then Update the apps in Home Assistant.
+#
+# Tags are the app `version` from config.yaml, which is what Supervisor pulls.
+name: Build images
+
+on:
+  workflow_dispatch:
+    inputs:
+      apps:
+        description: Space-separated app folders to build
+        required: true
+        default: postiz_postgres postiz_redis postiz_temporal postiz postiz_temporal_ui
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: docker/setup-buildx-action@v3
+
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push (amd64)
+        env:
+          APPS: ${{ github.event.inputs.apps }}
+          OWNER: ${{ github.repository_owner }}
+        run: |
+          set -euo pipefail
+          owner="$(printf '%s' "${OWNER}" | tr '[:upper:]' '[:lower:]')"
+          for app in ${APPS}; do
+            test -f "${app}/config.yaml" || { echo "unknown app ${app}"; exit 1; }
+            version="$(python3 -c 'import sys,yaml;print(yaml.safe_load(open(sys.argv[1]))["version"])' "${app}/config.yaml")"
+            slug="$(python3 -c 'import sys,yaml;print(yaml.safe_load(open(sys.argv[1]))["slug"])' "${app}/config.yaml")"
+            image="ghcr.io/${owner}/postiz-ha-${slug//_/-}"
+            echo "::group::${image}:${version}"
+            docker buildx build "${app}" \
+              --platform linux/amd64 \
+              --pull \
+              --provenance=false \
+              --build-arg BUILD_VERSION="${version}" \
+              --build-arg BUILD_ARCH=amd64 \
+              --tag "${image}:${version}" \
+              --push
+            echo "::endgroup::"
+          done

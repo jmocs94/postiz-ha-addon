@@ -1,0 +1,14 @@
+configuration:
+  read_only:
+    name: Read-only
+    description: >-
+      Disable terminate/cancel/signal/reset buttons. Keep on unless you know
+      you need them.
+  wait_timeout:
+    name: Wait timeout (seconds)
+    description: How long to wait for the Postiz Temporal app at start-up.
+  temporal_host:
+    name: Temporal host override
+    description: Leave empty (automatic discovery).
+network:
+  8080/tcp: Temporal UI (no authentication)

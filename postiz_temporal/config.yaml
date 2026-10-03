@@ -1,0 +1,34 @@
+# Postiz Temporal - Home Assistant app configuration
+# upstream_version: temporalio/auto-setup 1.28.4
+name: Postiz Temporal
+version: "0.1.0"
+slug: postiz_temporal
+description: Temporal workflow server for Postiz scheduling (PostgreSQL persistence and visibility, no Elasticsearch).
+url: https://temporal.io/
+arch:
+  - amd64
+# Starts after Home Assistant Core so it never competes with Core's boot.
+startup: application
+boot: auto
+# Docker's tini forwards signals to temporal-server and reaps helper processes.
+init: true
+timeout: 60
+# All Temporal state lives in the Postiz PostgreSQL app; nothing to stop here.
+backup: hot
+stage: experimental
+ports:
+  7233/tcp: null
+ports_description:
+  7233/tcp: Temporal gRPC (leave empty - only for temporary debugging)
+watchdog: tcp://[HOST]:7233
+options:
+  database_password: ""
+  namespace_retention: 72h
+  log_level: warn
+  wait_timeout: 600
+schema:
+  database_password: password
+  namespace_retention: match(^[0-9]{1,5}h$)
+  log_level: list(debug|info|warn|error)
+  wait_timeout: int(60,3600)
+  postgres_host: str?

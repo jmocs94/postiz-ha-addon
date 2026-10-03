@@ -1,0 +1,24 @@
+configuration:
+  postiz_password:
+    name: Postiz database password
+    description: >-
+      Password for the "postiz" database user. Enter the same value as
+      "Database password" in the Postiz app. 16-128 characters, letters,
+      digits and . _ ~ - only. Generate one with: openssl rand -hex 24
+  temporal_password:
+    name: Temporal database password
+    description: >-
+      Password for the "temporal" database user. Enter the same value as
+      "Database password" in the Postiz Temporal app. Must differ from the
+      Postiz password.
+  max_connections:
+    name: Max connections
+    description: >-
+      PostgreSQL max_connections. 100 is plenty for one Postiz install
+      (Postiz + Temporal use roughly 40-60).
+  shared_buffers_mb:
+    name: Shared buffers (MB)
+    description: >-
+      PostgreSQL shared_buffers. The default of 128 MB keeps RAM use small.
+network:
+  5432/tcp: PostgreSQL (debug only - leave empty)

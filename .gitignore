@@ -1,0 +1,9 @@
+# Local test data - never commit real data or secrets
+options.json
+*.env
+!postiz/rootfs/usr/local/share/postiz-ha/postiz.env.example
+secrets/
+.DS_Store
+*.swp
+.idea/
+.vscode/

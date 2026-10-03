@@ -1,0 +1,28 @@
+# Temporal UI for Postiz - Home Assistant app configuration (OPTIONAL)
+# upstream_version: temporalio/ui 2.34.0
+name: Temporal UI for Postiz
+version: "0.1.0"
+slug: postiz_temporal_ui
+description: Optional web UI to inspect Postiz's Temporal workflows. No authentication - start only while debugging.
+url: https://github.com/temporalio/ui
+arch:
+  - amd64
+startup: application
+# Never starts on boot; start it by hand when you need it.
+boot: manual
+init: true
+timeout: 20
+backup: hot
+stage: experimental
+webui: http://[HOST]:[PORT:8080]
+ports:
+  8080/tcp: 8233
+ports_description:
+  8080/tcp: Temporal UI (no authentication)
+options:
+  read_only: true
+  wait_timeout: 600
+schema:
+  read_only: bool
+  wait_timeout: int(60,3600)
+  temporal_host: str?

@@ -1,0 +1,6 @@
+# Home Assistant app repository for running Postiz under Supervisor.
+# Replace the URL with your own GitHub repository before adding it to
+# Home Assistant (Settings > Apps > App store > ... > Repositories).
+name: Postiz for Home Assistant
+url: https://github.com/jmocs94/postiz-ha-addon
+maintainer: Josh Schmidt

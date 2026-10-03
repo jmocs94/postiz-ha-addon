@@ -1,0 +1,30 @@
+# Postiz Redis - Home Assistant app configuration
+# upstream_version: redis 7.2.16-bookworm
+name: Postiz Redis
+version: "0.1.0"
+slug: postiz_redis
+description: Password-protected Redis 7.2 for the Postiz app suite.
+url: https://redis.io/
+arch:
+  - amd64
+startup: system
+boot: auto
+# redis-server runs as PID 1, exactly like the official image.
+init: false
+timeout: 30
+# Redis holds only short-lived data for Postiz; no need to stop it for backups.
+backup: hot
+stage: experimental
+ports:
+  6379/tcp: null
+ports_description:
+  6379/tcp: Redis (leave empty - only for temporary debugging)
+watchdog: tcp://[HOST]:6379
+options:
+  password: ""
+  maxmemory_mb: 128
+  persistence: false
+schema:
+  password: password
+  maxmemory_mb: int(32,1024)
+  persistence: bool

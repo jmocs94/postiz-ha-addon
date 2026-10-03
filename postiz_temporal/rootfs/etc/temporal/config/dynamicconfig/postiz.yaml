@@ -1,0 +1,14 @@
+# Temporal dynamic configuration for the Postiz app suite.
+# Same settings as postiz-docker-compose/dynamicconfig/development-sql.yaml.
+#
+# PostgreSQL persistence stores IDs in VARCHAR(255) columns, so IDs must not
+# exceed 255 characters (Temporal's own development-sql.yaml uses this value).
+limit.maxIDLength:
+  - value: 255
+    constraints: {}
+# Postiz registers its search attributes at backend start-up and uses them
+# immediately. Upstream Postiz ships this flag; the cost (re-reading search
+# attributes from the database on read) is negligible for one user.
+system.forceSearchAttributesCacheRefreshOnRead:
+  - value: true
+    constraints: {}

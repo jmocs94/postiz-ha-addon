@@ -1,0 +1,144 @@
+configuration:
+  external_url:
+    name: External URL
+    description: >-
+      The exact address you open Postiz with, no trailing path. Start with
+      http://YOUR-HA-IP:4007 and change it to your HTTPS hostname later
+      (e.g. https://postiz.example.com). All Postiz URLs and OAuth callbacks
+      are derived from this value.
+  database_password:
+    name: Database password
+    description: >-
+      Must equal "Postiz database password" in the Postiz PostgreSQL app.
+  redis_password:
+    name: Redis password
+    description: Must equal "Redis password" in the Postiz Redis app.
+  jwt_secret:
+    name: JWT secret (optional)
+    description: >-
+      Leave empty: a random secret is generated on first start and stored in
+      the app's data folder. Set it only to use your own (min. 32 characters).
+      Changing it logs everyone out.
+  disable_registration:
+    name: Disable registration
+    description: >-
+      Keep on. Postiz still lets the very first account register; after that
+      new sign-ups are refused.
+  storage_provider:
+    name: Media storage
+    description: >-
+      "local" stores uploads in this app's data folder. "cloudflare" uses
+      Cloudflare R2 (fill in the cloudflare_* options).
+  email_provider:
+    name: E-mail provider
+    description: >-
+      "none" is fine for a personal install (accounts are activated without
+      e-mail). "resend" or "nodemailer" (SMTP) need the matching options.
+  wait_timeout:
+    name: Dependency wait timeout (seconds)
+    description: >-
+      How long to wait for PostgreSQL, Redis and Temporal at start-up before
+      stopping with an error.
+  x_api_key:
+    name: X API key
+  x_api_secret:
+    name: X API secret
+  linkedin_client_id:
+    name: LinkedIn client ID
+    description: Also used for LinkedIn Pages.
+  linkedin_client_secret:
+    name: LinkedIn client secret
+  reddit_client_id:
+    name: Reddit client ID
+  reddit_client_secret:
+    name: Reddit client secret
+  facebook_app_id:
+    name: Facebook app ID
+    description: Also used for Instagram (Facebook Business login).
+  facebook_app_secret:
+    name: Facebook app secret
+  instagram_app_id:
+    name: Instagram app ID (standalone)
+  instagram_app_secret:
+    name: Instagram app secret (standalone)
+  threads_app_id:
+    name: Threads app ID
+  threads_app_secret:
+    name: Threads app secret
+  youtube_client_id:
+    name: YouTube client ID
+  youtube_client_secret:
+    name: YouTube client secret
+  tiktok_client_id:
+    name: TikTok client key
+  tiktok_client_secret:
+    name: TikTok client secret
+  pinterest_client_id:
+    name: Pinterest client ID
+  pinterest_client_secret:
+    name: Pinterest client secret
+  discord_client_id:
+    name: Discord client ID
+  discord_client_secret:
+    name: Discord client secret
+  discord_bot_token_id:
+    name: Discord bot token
+  mastodon_url:
+    name: Mastodon instance URL
+    description: Defaults to https://mastodon.social in Postiz when empty.
+  mastodon_client_id:
+    name: Mastodon client key
+  mastodon_client_secret:
+    name: Mastodon client secret
+  cloudflare_account_id:
+    name: Cloudflare account ID
+  cloudflare_access_key:
+    name: Cloudflare R2 access key ID
+  cloudflare_secret_access_key:
+    name: Cloudflare R2 secret access key
+  cloudflare_bucket_name:
+    name: Cloudflare R2 bucket name
+  cloudflare_bucket_url:
+    name: Cloudflare R2 public bucket URL
+  cloudflare_region:
+    name: Cloudflare R2 region
+    description: Usually "auto" (the default when empty).
+  resend_api_key:
+    name: Resend API key
+  smtp_host:
+    name: SMTP host
+  smtp_port:
+    name: SMTP port
+  smtp_secure:
+    name: SMTP TLS
+    description: Use TLS from the start (port 465). Defaults to on.
+  smtp_user:
+    name: SMTP user
+  smtp_password:
+    name: SMTP password
+  email_from_name:
+    name: E-mail sender name
+  email_from_address:
+    name: E-mail sender address
+  openai_api_key:
+    name: OpenAI API key
+    description: Optional, enables Postiz AI features.
+  api_limit:
+    name: Public API limit
+    description: Requests per hour for the Postiz public API (Postiz default 90).
+  exclude_queues:
+    name: Excluded worker queues
+    description: >-
+      Optional comma-separated provider queues to NOT start workers for
+      (e.g. "dribbble,lemmy"), to save a little RAM/CPU.
+  postgres_host:
+    name: PostgreSQL host override
+    description: Leave empty (automatic discovery).
+  redis_host:
+    name: Redis host override
+    description: Leave empty (automatic discovery).
+  temporal_host:
+    name: Temporal host override
+    description: Leave empty (automatic discovery).
+network:
+  5000/tcp: Postiz web interface (default 4007)

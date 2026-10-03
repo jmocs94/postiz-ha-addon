@@ -1,7 +1,7 @@
 # Postiz Temporal - Home Assistant app configuration
 # upstream_version: temporalio/auto-setup 1.28.4
 name: Postiz Temporal
-version: "0.1.0"
+version: "0.1.1"
 slug: postiz_temporal
 description: Temporal workflow server for Postiz scheduling (PostgreSQL persistence and visibility, no Elasticsearch).
 url: https://temporal.io/

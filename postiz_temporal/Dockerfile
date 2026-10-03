@@ -22,9 +22,14 @@ USER root
 RUN apk add --no-cache jq su-exec postgresql16-client
 
 COPY rootfs/ /
+# COPY resets ownership of directories that already exist in the image
+# (/etc/temporal/config is owned by "temporal" upstream). The upstream
+# entrypoint renders /etc/temporal/config/docker.yaml as the "temporal" user,
+# so give the config directories back to it.
 RUN chmod 0755 /usr/local/bin/postiz-temporal-run.sh \
     && chmod 0644 /usr/local/lib/postiz-ha/common.sh \
-       /etc/temporal/config/dynamicconfig/postiz.yaml
+       /etc/temporal/config/dynamicconfig/postiz.yaml \
+    && chown temporal:temporal /etc/temporal/config /etc/temporal/config/dynamicconfig
 
 WORKDIR /etc/temporal
 ENTRYPOINT ["/usr/local/bin/postiz-temporal-run.sh"]

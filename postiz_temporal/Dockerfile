@@ -5,7 +5,7 @@
 # minor line (security fixes, identical schema and config template).
 # NOTE: Temporal deprecated the auto-setup image after the 1.29 line. Moving
 # beyond 1.29 means switching to temporalio/server + admin-tools schema jobs.
-FROM temporalio/auto-setup:1.28.4
+FROM temporalio/auto-setup:1.29.3
 
 ARG BUILD_VERSION=dev
 ARG BUILD_ARCH=amd64

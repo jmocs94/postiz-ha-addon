@@ -2,7 +2,7 @@
 #
 # upstream_version: redis 7.2.16 (Debian bookworm variant)
 # Postiz's official compose uses redis:7.2; Postiz needs Redis >= 6.
-FROM redis:7.2.16-bookworm
+FROM redis:8.4.0-bookworm
 
 ARG BUILD_VERSION=dev
 ARG BUILD_ARCH=amd64

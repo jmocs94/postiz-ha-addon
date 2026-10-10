@@ -1,7 +1,7 @@
 # Temporal UI for Postiz - thin wrapper around temporalio/ui (optional app).
 #
 # upstream_version: temporalio/ui 2.34.0 (same as Postiz's official compose)
-FROM temporalio/ui:2.34.0
+FROM temporalio/ui:2.55.0
 
 ARG BUILD_VERSION=dev
 ARG BUILD_ARCH=amd64

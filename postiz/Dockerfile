@@ -5,7 +5,7 @@
 #   base node:22.20-bookworm-slim, WORKDIR /app, runs as root,
 #   no ENTRYPOINT, CMD ["sh", "-c", "nginx && pnpm run pm2"].
 # Nothing in /app is modified; the start script runs the same sequence.
-FROM ghcr.io/gitroomhq/postiz-app:v2.25.0
+FROM ghcr.io/gitroomhq/postiz-app:v2.25.2
 
 ARG BUILD_VERSION=dev
 ARG BUILD_ARCH=amd64
